@@ -1,0 +1,141 @@
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+		
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+	
+	<script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	
+	<style>
+		ul {
+ 		   list-style-type: none;
+ 		    padding: 5px;	    	  	    	   
+		}
+		li {
+			padding: 5px !important;
+			margin-bottom: 1px !important;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">		
+	
+		setInterval(function() {
+			$('#buscar').click();
+		}, 60000);
+	
+		$(function () {
+			$('#data').datepicker({				
+				dateFormat: 'dd/mm/yy'
+			});
+			$('#data').mask('99/99/9999');
+
+			if ($('#notificar').attr('value') != '') {
+				show();
+			}	
+			
+			Notification.requestPermission(function(permission) {	
+				if (permission === 'granted') {
+					$('#habilitarNotificacoes').hide();
+				}
+				console.log(permission)
+			});
+		});
+
+		function requestPerm() {
+
+			var Notification = window.Notification || window.mozNotification
+					|| window.webkitNotification;
+
+			Notification.requestPermission(function(permission) {		
+				if (permission === 'granted') {
+					$('#habilitarNotificacoes').hide();
+				}
+				console.log(permission)
+			});
+		}
+
+		function show() {
+			var instance = new Notification('Agendamentos', {
+				body : $('#notificar').attr('value'),
+				icon : "http://agendapramim.net.br/sd/img/exclamation64x64.png"
+			});
+			instance.onclick = function() {
+				window.focus();
+				this.cancel();
+			};
+			return false;
+		}
+				
+	</script>	
+	
+	<div class="container">
+		<div class="page-header">
+		  	<h1>Agendamentos</h1>
+		</div>
+		<div wicket:id="feedback"></div>							
+		
+		<form id="form" wicket:id="form">							
+			<div class="row">
+				<div class="col-md-3">
+					<label wicket:for="data"><wicket:label>Data</wicket:label></label>
+					<div class="input-group">						
+						<input id="data" wicket:id="data" type="text" class="form-control"/>
+						<span class="input-group-btn">							
+							<button id="buscar" wicket:id="buscar" type="button" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> Buscar</button>
+						</span>
+					</div>
+				</div>	
+				
+				<div class="col-md-2">
+					<label>&nbsp;</label>
+					<button id="habilitarNotificacoes" type="button" class="btn btn-primary" onclick="return requestPerm();" style="width: 100%;">Habilitar Notificações</button>
+				</div>							
+				<div class="col-md-1">
+					<input id="notificar" wicket:id="notificar" type="text" style="visibility: hidden;"/>
+				</div>					
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div>&nbsp;</div>					
+				</div>
+			</div>
+		
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="30%">Nome</th>
+						<th width="13%">Data</th>
+						<th width="10%">Telefone</th>
+						<th width="10%">E-Mail</th>
+						<th width="30%">Observação</th>
+						<th width="7%"></th>
+					</tr>				
+				</thead>
+				<tbody>
+					<tr wicket:id="grid">
+						<td><span wicket:id="nome"></span></td>
+						<td><span wicket:id="data"></span></td>
+						<td><span wicket:id="telefone"></span></td>
+						<td><span wicket:id="email"></span></td>
+						<td><span wicket:id="observacao"></span></td>
+						<td align="right"><button wicket:id="btnConfirmar" type="button" class="btn btn-success">Confirmar</button> <span wicket:id="lbConfirmado"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

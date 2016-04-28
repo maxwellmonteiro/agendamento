@@ -1,0 +1,56 @@
+<html>
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	
+	<style>
+		
+			ul {
+	 		   list-style-type: none;
+	 		    padding: 5px;	    	  	    	   
+			}
+			
+			li {
+				padding: 5px !important;
+				margin-bottom: 1px !important;
+			}
+			
+		</style>
+</head>
+<body>
+	<div class="container" style="max-width: 5in;">
+		<div class="page-header">
+		  	<h1>Login</h1>
+		</div>
+		<div wicket:id="feedback"></div>
+	    <form wicket:id="form" role="form" class="form">	
+			<div class="row">
+				<div class="col-md-12">
+					<label wicket:for="login"><wicket:label>Usuário</wicket:label></label>
+					<input wicket:id="login" type="text" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label wicket:for="senha"><wicket:label>Senha</wicket:label></label>
+					<input wicket:id="senha" type="password" class="form-control"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div><label>&nbsp</label></div>
+					<button wicket:id="autenticar" type="submit" class="btn btn-primary form-control">Autenticar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

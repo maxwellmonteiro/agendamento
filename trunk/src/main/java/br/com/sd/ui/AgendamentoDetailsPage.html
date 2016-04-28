@@ -1,0 +1,169 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+		<script src="js/jquery.maskedinput.min.js"></script>
+		<script src="js/datepicker-pt-BR.js"></script>
+
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+	
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+	 	<style>
+		
+			ul {
+	 		   list-style-type: none;
+	 		    padding: 5px;	    	  	    	   
+			}
+			
+			li {
+				padding: 5px !important;
+				margin-bottom: 1px !important;
+			}
+			
+			label.required:after {
+ 				content:" *";
+  				color:red;
+			}
+			
+		</style>
+	</head>
+	<body>
+	<div id='fb-root'></div>	
+	<script>
+
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId : '1093798317333073',				
+			    xfbml      : true,
+			    version    : 'v2.4'				
+			});	
+			
+			FB.getLoginStatus(function(response) {
+			  if (response.status === 'connected' || response.status === 'not_authorized') {			  
+			    FB.api('/me?fields=email,name', function(response) {
+			    	if (response && !response.error) {				    		
+						$('#nome').attr('value', response.name);
+						$('#email').attr('value', response.email);
+			    	}
+				});
+			  } 
+			 });		
+			
+		};
+	
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {
+				return;
+			}
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		
+		$(function() {
+			$('#data').datepicker({
+		        beforeShowDay: function(date) {
+		            var day = date.getDay();
+		            return [(day != 0 && day != 1)];
+		        },
+		        minDate: 1,	
+		        onSelect: function(date) {
+		            $('#atualizarHorario').click(); 
+		        }
+		    });
+			$('#data').blur(function () { $('#atualizarHorario').click();  });
+			$('#data').datepicker($.datepicker.regional["pt-BR"]);
+			$("#data").mask("99/99/9999");
+			$('#telefone').mask("9999-9999");
+			
+		});
+	</script>
+
+	<div class="container" style="max-width: 5in;">
+		<div class="page-header">
+		  	<h1>Agendamento</h1>
+		</div>
+		<div wicket:id="feedback"></div>
+	    <form wicket:id="form" role="form">	   						
+			<div class="row">
+				<div class="col-md-12">
+					<label wicket:for="nome"><wicket:label>Nome</wicket:label></label>
+					<div class="input-group">
+						<input id="nome" wicket:id="nome" type="text" class="form-control" maxlength="100"/>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					</div>
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="col-md-12">
+					<label wicket:for="data"><wicket:label>Data</wicket:label></label>
+					<div class="input-group">
+						<input id="data" wicket:id="data" type="text" class="form-control" style="background:white;" placeholder="Selecione uma data e depois um horário"/>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+					</div>
+				</div>
+			</div>	
+			
+		 	<div class="row">
+				<div wicket:id="divHorario" class="col-md-12">
+					<label wicket:for="horario"><wicket:label>Horário</wicket:label></label>
+					<div class="input-group">
+						<select wicket:id="horario" class="form-control"></select>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+					</div>
+				</div>
+			</div>  	
+			
+			<div class="row">
+				<div class="col-md-12">
+					<label wicket:for="telefone"><wicket:label>Telefone</wicket:label></label>
+					<div class="input-group">
+						<input id="telefone" wicket:id="telefone" type="text" class="form-control"/>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
+					</div>										
+				</div>
+			</div>	
+			
+			<div class="row">
+				<div class="col-md-12">				
+					<label wicket:for="email"><wicket:label>E-Mail</wicket:label></label>
+					<div class="input-group">
+						<input id="email" wicket:id="email" type="text" class="form-control" maxlength="50"/>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+					</div>
+				</div>
+			</div>	
+			<div class="row">
+				<div class="col-md-12">				
+					<label wicket:for="observacao"><wicket:label>Observação</wicket:label></label>
+					<input wicket:id="observacao" type="text" class="form-control" maxlength="100"/>
+				</div>
+			</div>	
+			<div class="row">
+				<div class="col-md-12">					
+					<button id="atualizarHorario" wicket:id="atualizarHorario" type="button" style="visibility: hidden;"></button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div><label>&nbsp;</label></div>
+					<button wicket:id="agendar" type="button" class="btn btn-primary form-control"><i class="glyphicon glyphicon-ok"></i> Agendar</button>
+				</div>
+			</div>	
+		</form>
+	</div>	
+	</body>
+</html>
